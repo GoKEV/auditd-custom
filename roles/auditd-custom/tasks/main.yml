@@ -1,0 +1,30 @@
+---
+- name: Install the auditd software packages and requred extras
+  dnf:
+    name:
+      - audit
+      - audit-libs
+      - audispd-plugins
+    state: latest
+  notify: restart_auditd
+
+- name: Default configuration is in place
+  template:
+    src: files/auditd.conf
+    dest: /etc/audit/auditd.conf
+    owner: root
+    group: root
+    mode: '0640'
+  notify: restart_auditd
+
+- name: Custom rules for our org
+  template:
+    src: templates/ansiblerole-custom.rule
+    dest: /etc/audit/rules.d/ansiblerole-custom.rule
+    owner: root
+    group: root
+    mode: '0640'
+  notify: restart_auditd
+
+
+

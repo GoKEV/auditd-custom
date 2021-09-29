@@ -1,0 +1,7 @@
+---
+- name: Install and configure AuditD with our special rules
+  hosts: "{{ HOSTS | default ('all') }}"
+
+  roles: 
+  - auditd-custom
+

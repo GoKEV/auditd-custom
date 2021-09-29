@@ -1,0 +1,21 @@
+## This file was placed by an Ansible role and is subject
+## to being overwritten at any time.  Please commit changes
+## through your SDLC, referencing a role called 'auditd-custom'
+##
+## This file should be placed as /etc/audit/rules.d/ansiblerole-custom.rule
+
+-w /etc/passwd -p wa -k passwd_changes
+-w /etc/selinux/ -p wa -k selinux_changes
+-w /sbin/insmod -p x -k module_insertion
+-w /etc/hosts -p wa -k hosts_file_change
+
+## sudo and su - root commands to identify the authenticated (real) user
+-a always,exit -F arch=b64 -S execve -F euid=0 -F key=rootcmd
+-a always,exit -F arch=b32 -S execve -F euid=0 -F key=rootcmd
+
+# changing time or time zone
+-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time_change
+
+# file unlinks / deletes / renames by a non-root user
+-a always,exit -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete
+

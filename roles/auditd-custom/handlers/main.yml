@@ -1,0 +1,12 @@
+---
+# handlers file for auditd-custom
+
+##  Restart of auditd cannot be done via systemctl,
+##  which makes the "service" module fail.
+##  So forgive me for doing it the wrong way :)  - Kev
+##
+##  https://bugzilla.redhat.com/show_bug.cgi?id=1026648
+##  https://github.com/ansible/ansible/issues/22171
+
+- name: restart_auditd
+  raw: service auditd restart
